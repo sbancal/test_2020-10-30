@@ -65,6 +65,8 @@ def plot_one(ax, time, data, label):
     ax.plot(time, data, label=label)
 
     # set the layout
+    ax.set_yticks([level['y_tick'] for level in LEVELS])
+    ax.set_yticklabels([level['label'] for level in LEVELS])
     ax.set_xlim(time[0], time[-1])
     ax.set_ylim(0, 200)
     ax.legend(loc='upper left')
