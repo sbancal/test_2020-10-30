@@ -40,6 +40,26 @@ LEVELS = [
         'min': 100, 'max': 200, 'y_tick': 150,
     },
 ]
+GRAPHS = [
+    {
+        'title': 'Irrigation June 2020',
+        'filename': 'irrigation_graph_2020-06.png',
+        'start_time': '2020-06-01',
+        'end_time': '2020-06-30',
+    },
+    {
+        'title': 'Irrigation July 2020',
+        'filename': 'irrigation_graph_2020-07.png',
+        'start_time': '2020-07-01',
+        'end_time': '2020-07-31',
+    },
+    {
+        'title': 'Irrigation August 2020',
+        'filename': 'irrigation_graph_2020-08.png',
+        'start_time': '2020-08-01',
+        'end_time': '2020-08-31',
+    },
+]
 
 
 def clean_data(data):
@@ -122,9 +142,12 @@ if __name__ == '__main__':
     for label in labels:
         clean_data(humidity_dataframe[label])
 
-    save_plot_to_file(
-        humidity_dataframe,
-        'Irrigation June 2020', labels,
-        '2020-06-01', '2020-06-30',
-        'irrigation_graph_2020-06.png'
-    )
+    for graph in GRAPHS:
+        save_plot_to_file(
+            humidity_dataframe,
+            graph['title'],
+            labels,
+            graph['start_time'],
+            graph['end_time'],
+            graph['filename'],
+            )
