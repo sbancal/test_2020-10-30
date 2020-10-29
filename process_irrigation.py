@@ -28,6 +28,19 @@ def clean_data(data):
     data[data == 200] = np.nan
 
 
+def plot_one(ax, time, data, label):
+    '''
+    Plot one graph on an ax, third of a figure
+    '''
+    # draw the measures
+    ax.plot(time, data, label=label)
+
+    # set the layout
+    ax.set_xlim(time[0], time[-1])
+    ax.set_ylim(0, 200)
+    ax.legend(loc='upper left')
+
+
 def save_plot_to_file(dataframe,
                       title, labels,
                       start_date, end_date,
@@ -44,7 +57,7 @@ def save_plot_to_file(dataframe,
     axes[0].set_title(title)
 
     for i in range(3):
-        axes[i].plot(time, data[i], label=labels[i])
+        plot_one(axes[i], time, data[i], labels[i])
 
     fig.autofmt_xdate()
     fig.savefig(filename)
