@@ -18,6 +18,28 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 SOURCE_FILE = 'eco-sensors_irrigation_2020-06-01_2020-08-31.json'
+LEVELS = [
+    {
+        'label': 'saturated', 'color': 'red',
+        'min': 0, 'max': 15, 'y_tick': 7,
+    },
+    {
+        'label': 'too wet', 'color': 'orange',
+        'min': 15, 'max': 30, 'y_tick': 23,
+    },
+    {
+        'label': 'perfect', 'color': 'green',
+        'min': 30, 'max': 60, 'y_tick': 45,
+    },
+    {
+        'label': 'plan to water', 'color': 'yellow',
+        'min': 60, 'max': 100, 'y_tick': 80,
+    },
+    {
+        'label': 'dry', 'color': 'red',
+        'min': 100, 'max': 200, 'y_tick': 150,
+    },
+]
 
 
 def clean_data(data):
@@ -32,6 +54,13 @@ def plot_one(ax, time, data, label):
     '''
     Plot one graph on an ax, third of a figure
     '''
+    # fill the level regions with color
+    for level in LEVELS:
+        ax.fill_between(
+            time, level['min'], level['max'],
+            facecolor=level['color'], alpha=0.2
+        )
+
     # draw the measures
     ax.plot(time, data, label=label)
 
