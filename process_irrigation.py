@@ -13,9 +13,18 @@ Finaly we plot it in separated files (one per month) :
 '''
 
 import json
+import numpy as np
 import pandas as pd
 
 SOURCE_FILE = 'eco-sensors_irrigation_2020-06-01_2020-08-31.json'
+
+
+def clean_data(data):
+    '''
+    Clean data object
+    Saturated values (200) are replaced with np.nan
+    '''
+    data[data == 200] = np.nan
 
 
 if __name__ == '__main__':
@@ -41,6 +50,10 @@ if __name__ == '__main__':
         dtype='float'
     )
     humidity_dataframe.index = pd.to_datetime(humidity_dataframe.index)
+
+    # Clean data
+    for label in labels:
+        clean_data(humidity_dataframe[label])
 
     # Print that DataFrame to see what's inside
     print('humidity_dataframe:')
