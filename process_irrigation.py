@@ -15,6 +15,7 @@ Finaly we plot it in separated files (one per month) :
 import json
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
 
 SOURCE_FILE = 'eco-sensors_irrigation_2020-06-01_2020-08-31.json'
 
@@ -25,6 +26,28 @@ def clean_data(data):
     Saturated values (200) are replaced with np.nan
     '''
     data[data == 200] = np.nan
+
+
+def save_plot_to_file(dataframe,
+                      title, labels,
+                      start_date, end_date,
+                      filename):
+    '''
+    Will prepare a graph with 3 subplots from the dataframe
+    and save it to a file
+    '''
+    time = dataframe[start_date:end_date].index
+    data = [dataframe[start_date:end_date][labels[i]].values for i in range(3)]
+
+    fig = plt.figure(figsize=(10, 10), dpi=100)
+    axes = fig.subplots(3, 1, sharex=True)
+    axes[0].set_title(title)
+
+    for i in range(3):
+        axes[i].plot(time, data[i], label=labels[i])
+
+    fig.autofmt_xdate()
+    fig.savefig(filename)
 
 
 if __name__ == '__main__':
@@ -55,15 +78,9 @@ if __name__ == '__main__':
     for label in labels:
         clean_data(humidity_dataframe[label])
 
-    # Print that DataFrame to see what's inside
-    print('humidity_dataframe:')
-    print(humidity_dataframe, end='\n\n')
-
-    print('humidity_dataframe.index:')
-    print(humidity_dataframe.index, end='\n\n')
-
-    print('humidity_dataframe.describe():')
-    print(humidity_dataframe.describe(), end='\n\n')
-
-    print('humidity_dataframe.dtypes:')
-    print(humidity_dataframe.dtypes, end='\n\n')
+    save_plot_to_file(
+        humidity_dataframe,
+        'Irrigation June 2020', labels,
+        '2020-06-01', '2020-06-30',
+        'irrigation_graph_2020-06.png'
+    )
